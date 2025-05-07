@@ -1,4 +1,4 @@
-const apiKey = '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; // Ganti dengan API Key OpenRouter Anda
+const apiKey = 'U5lqq7pbOjGrz8mu4rqGIJQPChxOEQLfGy7WZqFn'; // Ganti dengan API Key dari Cohere
 const chatbox = document.getElementById("chatbox");
 
 function appendMessage(message, sender) {
@@ -13,22 +13,21 @@ async function sendMessage() {
   if (userInput.trim() === "") return;
 
   appendMessage(userInput, "user");
-  document.getElementById("userInput").value = ""; // Kosongkan input
+  document.getElementById("userInput").value = "";
 
-  const response = await fetch('https://api.openrouter.ai/v1/completions', {
-    method: 'POST',
+  const response = await fetch("https://api.cohere.ai/v1/chat", {
+    method: "POST",
     headers: {
-      'Authorization': `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
+      "Authorization": `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: 'gpt-3.5-turbo',
-      prompt: userInput,
-      max_tokens: 100
-    })
+      model: "command-r-plus", // model gratis dan bagus
+      message: userInput
+    }),
   });
 
   const data = await response.json();
-  const botReply = data?.choices[0]?.text || "Maaf, saya tidak mengerti.";
+  const botReply = data.text || "Maaf, saya tidak mengerti.";
   appendMessage(botReply, "bot");
 }
